@@ -169,7 +169,7 @@ getUrl() {
    </paper-dropdown-menu>
    </div>
    <paper-input id="quantityValue" type="number" label="Quantity"></paper-input>
-   <paper-input type="number" label="price" disabled id="priceValue"></paper-input>
+   <paper-input type="number" label="price" id="priceValue"></paper-input>
    
    <paper-button name="Submit" autofocus id="getQueto" raised on-click="_loadQuote">get Quote</paper-button>
 <div>

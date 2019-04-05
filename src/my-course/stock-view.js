@@ -10,6 +10,10 @@ import '@vaadin/vaadin-date-picker/vaadin-date-picker.js';
 import './shared-styles.js';
 
 class Stockview extends PolymerElement {
+  connectedCallback(){
+    super.connectedCallback();
+    this._generateAjaxCall('http://10.117.189.42:9080/IngTrade/trades/users','GET',null);
+  }
 
   static get properties() {
     return {

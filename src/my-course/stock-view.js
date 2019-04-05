@@ -12,7 +12,7 @@ import './shared-styles.js';
 class Stockview extends PolymerElement {
   connectedCallback(){
     super.connectedCallback();
-    this._generateAjaxCall('http://10.117.189.42:9080/IngTrade/trades/users','GET',null);
+    this._generateAjaxCall('http://10.117.189.42:9080/IngTrade/trades/users','GET',null,'users');
   }
 
   static get properties() {
@@ -21,21 +21,21 @@ class Stockview extends PolymerElement {
       entityClient: {
         type: Array,
         value: [
-      //     {
-      //         name: 'user 1'
-      //     },
-      //     {
-      //         name: 'user 2'
-      //     } ,
-      //     {
-      //       name: 'user 3'
-      //   } , 
-      //   {
-      //     name: 'user 4'
-      //    } , 
-      //  {
-      //   name: 'user 5'
-      //  } ,                    
+          {
+              name: 'user 1'
+          },
+          {
+              name: 'user 2'
+          } ,
+          {
+            name: 'user 3'
+        } , 
+        {
+          name: 'user 4'
+         } , 
+       {
+        name: 'user 5'
+       } ,                    
       ]
     },
     categorySelected:{
@@ -45,7 +45,8 @@ class Stockview extends PolymerElement {
       type:String
     },
     personData:{
-      type:Array
+      type:Object,
+      value:{}
     },
     stocksData: {
       type: Array,
@@ -65,6 +66,10 @@ class Stockview extends PolymerElement {
                         
     ]
   },
+
+  dataFlag:{
+    type: String
+  }
 
     }
   }
@@ -93,15 +98,20 @@ _stockSelected(e){
 
 _handleResponse(event) {
   debugger;
-  this.personData = event.detail.response;
+  //this.personData = event.detail.response;
+  if(this.$)
+  this.set('personData',event.detail.response);
   this.$.priceValue.value = event.detail.response['Global Quote']['05. price'];
   this.$.priceValue.value = this.$.priceValue.value * this.$.quantityValue.value;
 }
 
-_generateAjaxCall(url,method,data){
+_generateAjaxCall(url,method,data,dataFlag){
   
   let ajaxEle = this.$.ajaxquote;
   ajaxEle.url = url;
+  if(dataFlag =='users'){
+    this.usersFlag = true;
+  }
   if(method == 'POST'){
       ajaxEle.contentType='application/json';
       ajaxEle.body= JSON.stringify(data);
@@ -112,7 +122,7 @@ _generateAjaxCall(url,method,data){
 
 _loadQuote(){     
   
-  this._generateAjaxCall("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=HCl&apikey=MMGWFDI4RI56JCZA",'GET',null);       
+  this._generateAjaxCall("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=HCl&apikey=MMGWFDI4RI56JCZA",'GET',null,'stocks');       
 }
 
 getUrl() {
@@ -140,8 +150,8 @@ getUrl() {
       
       <paper-dropdown-menu name="users" label="Users"  on-iron-select="_userSelected">
        <paper-listbox slot="dropdown-content" class="dropdown-content">
-           <dom-repeat items={{personData}}>
-              <template> <paper-item value={{personData.userName}}>{{personData.userName}}</paper-item></template>
+           <dom-repeat items={{entityClient}}>
+              <template> <paper-item value={{entityClient}}>{{entityClient}}</paper-item></template>
            </dom-repeat>
        </paper-listbox>
    </paper-dropdown-menu>

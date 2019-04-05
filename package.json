@@ -8,9 +8,16 @@
     "@polymer/iron-pages": "^3.0.1",
     "@polymer/iron-selector": "^3.0.1",
     "@polymer/paper-button": "^3.0.1",
+    "@polymer/paper-dropdown-menu": "^3.0.1",
     "@polymer/paper-icon-button": "^3.0.2",
     "@polymer/paper-input": "^3.0.1",
-    "@polymer/polymer": "^3.0.0"
+    "@polymer/paper-item": "^3.0.1",
+    "@polymer/paper-listbox": "^3.0.1",
+    "@polymer/polymer": "^3.0.0",
+    "@types/web-animations-js": "^2.2.8",
+    "@vaadin/vaadin-date-picker": "^3.3.2",
+    "@vaadin/vaadin-grid": "^5.3.3",
+    "web-animations-js": "^2.3.1"
   },
   "devDependencies": {
     "@polymer/test-fixture": "^4.0.2",

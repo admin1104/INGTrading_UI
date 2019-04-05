@@ -1,0 +1,6 @@
+{
+  "name": "my-course-mongodb",
+  "short_name": "my-course-mongodb",
+  "start_url": "/",
+  "display": "standalone"
+}

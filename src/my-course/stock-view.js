@@ -151,7 +151,7 @@ getUrl() {
       <paper-dropdown-menu name="users" label="Users"  on-iron-select="_userSelected">
        <paper-listbox slot="dropdown-content" class="dropdown-content">
            <dom-repeat items={{entityClient}}>
-              <template> <paper-item value={{entityClient}}>{{entityClient}}</paper-item></template>
+              <template> <paper-item value={{item.name}}>{{item.name}}</paper-item></template>
            </dom-repeat>
        </paper-listbox>
    </paper-dropdown-menu>

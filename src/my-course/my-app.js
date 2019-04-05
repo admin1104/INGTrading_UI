@@ -76,7 +76,7 @@ class MyApp extends PolymerElement {
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
             <a name="mylogin" href="[[rootPath]]mylogin"></a>           
             <a name="stockview" href="[[rootPath]]stockview">Stock Page</a>
-            <a name="stockanlysis" href="[[rootPath]]stockanlysis">Stock Anlysis</a>
+            <a name="stockanlysis" href="[[rootPath]]stockanlysis"></a>
           </iron-selector>
         </app-drawer>
 

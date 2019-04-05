@@ -21,21 +21,21 @@ class Stockview extends PolymerElement {
       entityClient: {
         type: Array,
         value: [
-          {
-              name: 'user 1'
-          },
-          {
-              name: 'user 2'
-          } ,
-          {
-            name: 'user 3'
-        } , 
-        {
-          name: 'user 4'
-         } , 
-       {
-        name: 'user 5'
-       } ,                    
+      //     {
+      //         name: 'user 1'
+      //     },
+      //     {
+      //         name: 'user 2'
+      //     } ,
+      //     {
+      //       name: 'user 3'
+      //   } , 
+      //   {
+      //     name: 'user 4'
+      //    } , 
+      //  {
+      //   name: 'user 5'
+      //  } ,                    
       ]
     },
     categorySelected:{
@@ -44,7 +44,9 @@ class Stockview extends PolymerElement {
     stockname:{
       type:String
     },
-
+    personData:{
+      type:Array
+    },
     stocksData: {
       type: Array,
       value: [
@@ -91,6 +93,7 @@ _stockSelected(e){
 
 _handleResponse(event) {
   debugger;
+  this.personData = event.detail.response;
   this.$.priceValue.value = event.detail.response['Global Quote']['05. price'];
   this.$.priceValue.value = this.$.priceValue.value * this.$.quantityValue.value;
 }
@@ -137,12 +140,12 @@ getUrl() {
       
       <paper-dropdown-menu name="users" label="Users"  on-iron-select="_userSelected">
        <paper-listbox slot="dropdown-content" class="dropdown-content">
-           <dom-repeat items={{entityClient}}>
-              <template> <paper-item value={{item.name}}>{{item.name}}</paper-item></template>
+           <dom-repeat items={{personData}}>
+              <template> <paper-item value={{personData.userName}}>{{personData.userName}}</paper-item></template>
            </dom-repeat>
        </paper-listbox>
    </paper-dropdown-menu>
-
+   
    <div>
 
 

@@ -63,7 +63,7 @@ class MyApp extends PolymerElement {
         }
       </style>
 
-      <app-location route="{{route}}" url-space-regex="^[[rootPath]]">
+      <app-location route="{{route}}" url-space-regex="^[[rootPath]]" use-hash-as-path>
       </app-location>
 
       <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}">
@@ -74,9 +74,9 @@ class MyApp extends PolymerElement {
         <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
           <app-toolbar>Menu</app-toolbar>
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-            <a name="mylogin" href="[[rootPath]]mylogin"></a>           
-            <a name="stockview" href="[[rootPath]]stockview">Stock Page</a>
-            <a name="stockanlysis" href="[[rootPath]]stockanlysis"></a>
+            <a name="mylogin" href="#/mylogin"></a>           
+            <a name="stockview" href="#/stockview">Stock Page</a>
+            <a name="stockanlysis" href="#/stockanlysis">stock anlysis</a>
           </iron-selector>
         </app-drawer>
 

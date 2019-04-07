@@ -16,8 +16,10 @@
     "@polymer/paper-listbox": "^3.0.1",
     "@polymer/polymer": "^3.0.0",
     "@types/web-animations-js": "^2.2.8",
+    "@vaadin/vaadin-accordion": "^1.0.0",
     "@vaadin/vaadin-date-picker": "^3.3.2",
     "@vaadin/vaadin-grid": "^5.3.3",
+    "d3": "^5.9.2",
     "web-animations-js": "^2.3.1"
   },
   "devDependencies": {

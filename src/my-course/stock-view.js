@@ -12,17 +12,30 @@ import './shared-styles.js';
 class Stockview extends PolymerElement {
   connectedCallback(){
     super.connectedCallback();
-    this._generateAjaxCall('http://10.117.189.42:9080/IngTrade/trades/users','GET',null,'users');
+    let ajaxCall = this.$.ajaxstcok;
+   // ajaxCall.url = config.baseUrl + "/trades/users";
   }
 
   static get properties() {
     return {
       data: Array  ,
+      actionType: {
+        type: String,
+        value: 'list'
+      },
+      priceValue:{
+        type: Number
+      },
+      totalPrice:{
+        type: Number
+      },
+      
       entityClient: {
         type: Array,
         value: [
           {
-              name: 'user 1'
+              name: 'user 1',
+            
           },
           {
               name: 'user 2'
@@ -69,6 +82,15 @@ class Stockview extends PolymerElement {
 
   dataFlag:{
     type: String
+  },
+  brokageFee:{
+    type: Number
+  },
+  userId:{
+    type: String
+  },
+  totalId: {
+      type: Number
   }
 
     }
@@ -80,6 +102,22 @@ class Stockview extends PolymerElement {
     if (selectedItem) {
         this.categorySelected = selectedItem.value;
         let selectedtTYpe =this.categorySelected
+        if(selectedtTYpe == "user 1"){
+          this.userId = "101"  
+        }
+        if(selectedtTYpe == "user 2"){
+          this.userId = "102"  
+        }
+
+        if(selectedtTYpe == "user 3"){
+          this.userId = "103"  
+        }
+        if(selectedtTYpe == "user 4"){
+          this.userId = "104"  
+        }
+        if(selectedtTYpe == "user 5"){
+          this.userId = "105"  
+        }
         console.log(selectedtTYpe);      
     }
 }
@@ -97,36 +135,62 @@ _stockSelected(e){
 
 
 _handleResponse(event) {
-  debugger;
-  //this.personData = event.detail.response;
-  if(this.$)
-  this.set('personData',event.detail.response);
-  this.$.priceValue.value = event.detail.response['Global Quote']['05. price'];
-  this.$.priceValue.value = this.$.priceValue.value * this.$.quantityValue.value;
+  
+  this.personData = event.detail.response;
+  
+  let stockPrice = event.detail.response['Global Quote']['05. price'];  
+  if(this.$.quantityValue.value < 500){
+    this.$.brokageFee = .1 * stockPrice;
+  }
+  else{
+    this.$.brokageFee = .15 * stockPrice;
+    
+  }
+  let brokageFee = this.$.brokageFee; 
+  console.log(brokageFee);
+  let totalPrice = (parseInt(stockPrice) + this.$.brokageFee) * this.$.quantityValue.value;
+  this.$.totalId.value = parseFloat(totalPrice).toFixed(3);
+  this.$.priceValue.value = parseFloat(stockPrice).toFixed(3);
+  //this.$.brokageFee.value= brokageFee;
+  
+  this.brokageFee = brokageFee;
 }
 
-_generateAjaxCall(url,method,data,dataFlag){
-  
-  let ajaxEle = this.$.ajaxquote;
-  ajaxEle.url = url;
-  if(dataFlag =='users'){
-    this.usersFlag = true;
-  }
+_generateAjaxCall(url,method,data){  
+  let ajaxstcok = this.$.ajaxstcok;
+  ajaxstcok.url = url;  
   if(method == 'POST'){
-      ajaxEle.contentType='application/json';
-      ajaxEle.body= JSON.stringify(data);
+    ajaxstcok.contentType='application/json';
+    ajaxstcok.body= JSON.stringify(data);
   }
-  ajaxEle.method = method;
-  ajaxEle.generateRequest();
+  ajaxstcok.method = method;
+  ajaxstcok.generateRequest();
 }
 
 _loadQuote(){     
   
-  this._generateAjaxCall("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=HCl&apikey=MMGWFDI4RI56JCZA",'GET',null,'stocks');       
+  this._generateAjaxCall("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=HCl&apikey=MMGWFDI4RI56JCZA",'GET',null);       
 }
 
-getUrl() {
-  return baseUrl + "trades/stocks";
+getUrl(param) {
+  return config.baseUrl + param;
+
+}
+
+_buyStock() {  
+  var ajaxstcok = this.$.ajaxstcok;  
+  ajaxstcok.url = config.baseUrl + "trades/submit";
+  ajaxstcok.method = "POST"
+  let obj = {"userId": this.userId, 
+
+  "stockName": this.stocksData,
+  "totalPrice": this.totalPrice,
+  "priceValue": this.$.priceValue.value,
+"brokerageFee": this.brokageFee};
+console.log(obj);
+  ajaxstcok.body = obj;
+  this._generateAjaxCall( ajaxstcok.url , "POST",obj);
+  this.$.ajaxstcok.generateRequest(); 
 }
 
   static get template() {
@@ -141,13 +205,14 @@ getUrl() {
 
       <iron-ajax  
       auto      
-      id="ajaxquote"
-      url="[[getUrl()]]"      
-      on-response="_handleResponse"> </iron-ajax>
+      id="ajaxstcok"            
+      on-response="_handleResponse" 
+      url="[[_getUrl('/trades/submit')]]"> </iron-ajax>
 
 
       <div class="card">
-      
+      <form>
+      <iron-form id="stockForm">
       <paper-dropdown-menu name="users" label="Users"  on-iron-select="_userSelected">
        <paper-listbox slot="dropdown-content" class="dropdown-content">
            <dom-repeat items={{entityClient}}>
@@ -169,13 +234,22 @@ getUrl() {
    </paper-dropdown-menu>
    </div>
    <paper-input id="quantityValue" type="number" label="Quantity"></paper-input>
-   <paper-input type="number" label="price" id="priceValue"></paper-input>
+   <paper-input type="number" label="Price" name="totalPrice" value="{{totalPrice}}" id="priceValue"></paper-input>
+   <paper-input type="number" label="brokage fee" id="brokageFee" name="brokageFee" value={{brokageFee}} ></paper-input>
+   <paper-input type="number" label="Total" id="totalId"></paper-input>
    
    <paper-button name="Submit" autofocus id="getQueto" raised on-click="_loadQuote">get Quote</paper-button>
+
+   <paper-button name="Submit" autofocus id="buyId" raised on-click="_buyStock">Buy</paper-button>
+
+   <paper-button name="Submit" autofocus id="cacelId" raised on-click="_cancelStocks">Cancel</paper-button>
+
+   
 <div>
    
 </div>
-
+</iron-form
+</form>
 </div>
     `;
   }

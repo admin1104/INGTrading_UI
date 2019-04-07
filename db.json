@@ -1,28 +1,23 @@
 {
-  "posts": [
-    {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
-  ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
-  ],
-  "profile": {
-    "name": "typicode"
-  },
-  "register": {
-    "name": "aditi kumari",
-    "username": "aditi",
-    "sapId": "134525",
-    "email": "aditi@gmail.com",
-    "primarySkill": "java",
-    "band": "b2",
-    "password": "123"
-  }
+  "products":[
+     {
+       "entityName":"HCL",
+       "price":"10.00",
+       "brokage": "0.1",
+      "quantity":"10",
+       "total": "150",
+       "starttime": "11:00",
+       "endttime": "12:00"
+     },
+     {
+      "entityName":"HCL",
+      "price":"20.00",
+      "brokage": "0.1",
+     "quantity":"10",
+      "total": "250",
+      "starttime": "01:00",
+       "endttime": "02:00"
+     }
+    
+  ]
 }

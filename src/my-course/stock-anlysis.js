@@ -160,19 +160,16 @@ g.append("g")
     > </iron-ajax>    
 
     <div> Stocks </div>
-
-    <template is ="dom-repeat" items={{stockdata}}>
     <vaadin-accordion >
+    <template is ="dom-repeat" items={{stockdata}}>
       <vaadin-accordion-panel theme="filled">
       <div slot="summary">[[item.stockName]]</div>
        <template is="dom-repeat" items={{stockdata}}>
        <div>[[item.description]]</div>
-       
-        
         </template>
       </vaadin-accordion-panel>  
-    </vaadin-accordion>
     </template>
+    </vaadin-accordion>
 
       </div>
 

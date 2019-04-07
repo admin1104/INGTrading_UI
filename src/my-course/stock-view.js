@@ -129,10 +129,9 @@ class Stockview extends PolymerElement {
 _stockSelected(e){
   var selectedItem = e.target.selectedItem;
     if (selectedItem) {
-        this.stocksData = selectedItem.value;
-        let selectedtStockVal =this.stocksData;
-        this.stockname = selectedtStockVal;
-        console.log(selectedtStockVal);  
+        // this.stocksData = selectedItem.value;
+        // let selectedtStockVal =this.stocksData;
+        this.stockname = selectedItem.value;
              
     }
 }
@@ -141,7 +140,7 @@ _stockSelected(e){
 _handleResponse(event) {
   
   this.personData = event.detail.response;
-  alert('Data Saved Success');
+ // alert('Data Saved Success');
   let stockPrice = event.detail.response['Global Quote']['05. price'];  
   if(this.$.quantityValue.value < 500){
     this.$.brokageFee = .1 * stockPrice;
@@ -173,12 +172,15 @@ _generateAjaxCall(url,method,data){
 
 _loadQuote(){     
   
-  this._generateAjaxCall("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=HCl&apikey=MMGWFDI4RI56JCZA",'GET',null);       
+  this._generateAjaxCall("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol="+ this.stockname +"&apikey=MMGWFDI4RI56JCZA",'GET',null);       
 }
 
 getUrl(param) {
   return config.baseUrl + param;
 
+}
+_getStockName(){
+  return this.stockname;
 }
 
 _buyStock() {    
@@ -194,6 +196,7 @@ _buyStock() {
   ajaxstcok.body = obj;
   this._generateAjaxCall( ajaxstcok.url , "POST",obj);
   this.$.ajaxstcok.generateRequest(); 
+  this.$.stockForm.reset();
 }
 
   static get template() {

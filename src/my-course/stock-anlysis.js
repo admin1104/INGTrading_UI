@@ -21,10 +21,10 @@ import './shared-styles.js';
 class Stockanlysis extends PolymerElement {
   constructor(){
     super();
-    // const data = [{hou: 2011, value: 45},{year: 2012, value: 47},
-    //     {year: 2013, value: 52},{year: 2014, value: 70},
-    //      {year: 2015, value: 75},{year: 2016, value: 30},];
-    //      this.data= data;
+    const data = [{year: 2011, value: 45},{year: 2012, value: 47},
+        {year: 2013, value: 52},{year: 2014, value: 70},
+         {year: 2015, value: 75},{year: 2016, value: 30},];
+         this.data= data;
 }
 
   connectedCallback(){
@@ -32,7 +32,7 @@ class Stockanlysis extends PolymerElement {
     let ajaxCall = this.$.ajaxcall;
      ajaxCall.url = config.baseUrl + "/trades/stocks";
    
-    this.initGraph();
+   // this.initGraph();
 }
 
 // connectedCallback(){
@@ -93,8 +93,8 @@ g.append("g")
     this.initGraph();
   }
 
-  _getUrl() {
-    //this._generateAjaxCall("http://10.117.189.42:8090/IngTrade/trades/dailyStockAnlytics",'GET',null);     
+  getUrl(param) {
+    return config.baseUrl + param;  
   }
 
   _generateAjaxCall(url,method,data){  
@@ -109,7 +109,7 @@ g.append("g")
   }
 
   _dailyStocks(){
-    this._generateAjaxCall("http://10.117.189.42:8090/IngTrade/trades/dailyStockAnlytics",'GET',null); 
+    this._generateAjaxCall("http://52.66.210.137:8085/IngTrade/trades/dailyStockAnlytics",'GET',null); 
   }
   static get template() {
     return html`
@@ -139,7 +139,7 @@ g.append("g")
         auto 
         id="ajaxcall"
         handle-as="json"       
-        url="http://10.117.189.42:9080/IngTrade/trades/stocks"
+        url="http://52.66.210.137:8085/IngTrade/trades/stocks"
         on-response="_handleResponse"
     > </iron-ajax>
     <div>
@@ -147,7 +147,7 @@ g.append("g")
     </div>
 
     <div> Stocks </div>
-    
+
     <template is ="dom-repeat" items={{data}}>
     <vaadin-accordion >
       <vaadin-accordion-panel theme="filled">

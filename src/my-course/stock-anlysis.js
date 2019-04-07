@@ -157,10 +157,7 @@ g.append("g")
         handle-as="json"       
         url="http://52.66.210.137:8085/IngTrade/trades/stocks"
         on-response="_handleResponse"
-    > </iron-ajax>
-    <div>
-    <paper-button name="dailyStocksId" autofocus id="dailyStocksId" raised on-click="_dailyStocks">Daily Stocks Analytics</paper-button>
-    </div>
+    > </iron-ajax>    
 
     <div> Stocks </div>
 
@@ -181,6 +178,9 @@ g.append("g")
 
       <div class="card">
 
+      <div>
+    <paper-button name="dailyStocksId" autofocus id="dailyStocksId" raised on-click="_dailyStocks">Daily Stocks Analytics</paper-button>
+    </div>
       <svg id="svg1" width='600' height='500'></svg>
       </div>
 

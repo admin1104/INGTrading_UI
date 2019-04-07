@@ -91,6 +91,10 @@ class Stockview extends PolymerElement {
   },
   totalId: {
       type: Number
+  },
+  displayType:{
+    type: String,
+    value: "beforeSubmit"
   }
 
     }
@@ -137,7 +141,7 @@ _stockSelected(e){
 _handleResponse(event) {
   
   this.personData = event.detail.response;
-  
+  alert('Data Saved Success');
   let stockPrice = event.detail.response['Global Quote']['05. price'];  
   if(this.$.quantityValue.value < 500){
     this.$.brokageFee = .1 * stockPrice;
@@ -177,17 +181,16 @@ getUrl(param) {
 
 }
 
-_buyStock() {  
+_buyStock() {    
   var ajaxstcok = this.$.ajaxstcok;  
-  ajaxstcok.url = config.baseUrl + "trades/submit";
+  ajaxstcok.url = config.baseUrl + "/trades/buyStocks";
   ajaxstcok.method = "POST"
   let obj = {"userId": this.userId, 
-
   "stockName": this.stocksData,
   "totalPrice": this.totalPrice,
   "priceValue": this.$.priceValue.value,
 "brokerageFee": this.brokageFee};
-console.log(obj);
+//console.log(obj);
   ajaxstcok.body = obj;
   this._generateAjaxCall( ajaxstcok.url , "POST",obj);
   this.$.ajaxstcok.generateRequest(); 

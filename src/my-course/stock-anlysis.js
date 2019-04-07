@@ -64,7 +64,7 @@ g.append("g")
 
   g.append("g")
    .call(d3.axisLeft(yScale).tickFormat(function(d){
-       return "$" + d;
+       return + d;
    }).ticks(10))
 
    g.selectAll(".bar")

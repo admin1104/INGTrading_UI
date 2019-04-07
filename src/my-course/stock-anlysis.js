@@ -21,10 +21,10 @@ import './shared-styles.js';
 class Stockanlysis extends PolymerElement {
   constructor(){
     super();
-    const data = [{year: 2011, value: 45},{year: 2012, value: 47},
-        {year: 2013, value: 52},{year: 2014, value: 70},
-         {year: 2015, value: 75},{year: 2016, value: 30},];
-         this.data= data;
+    // const data = [{year: 2011, value: 45},{year: 2012, value: 47},
+    //     {year: 2013, value: 52},{year: 2014, value: 70},
+    //      {year: 2015, value: 75},{year: 2016, value: 30},];
+    //      this.data= data;
 }
 
   connectedCallback(){
@@ -40,9 +40,10 @@ class Stockanlysis extends PolymerElement {
  
 //   this.initGraph();
 // }
-initGraph () {
-  var data = this.data;
-  this.data = data;
+initGraph (grapValu) {
+
+  this.data =grapValu;
+  let data=  this.data;
   var svg = d3.select(this.shadowRoot.querySelector('svg')),
   margin = 200,
   width = svg.attr("width") - margin,
@@ -55,8 +56,8 @@ var g = svg.append("g")
          .attr("transform", "translate(" + 100 + "," + 100 + ")"); 
 
          
-xScale.domain(data.map(function(d) { return d.year; }));
-yScale.domain([0, d3.max(data, function(d) { return d.value; })]);
+xScale.domain(data.map(function(d) { return d.stringName; }));
+yScale.domain([0, d3.max(data, function(d) { return d.units; })]);
 g.append("g")
    .attr("transform", "translate(0," + height + ")")
    .call(d3.axisBottom(xScale));
@@ -72,10 +73,10 @@ g.append("g")
    .attr("class", "arc")
 
    .attr("class", "bar")
-   .attr("x", function(d) { return xScale(d.year); })
-   .attr("y", function(d) { return yScale(d.value); })
+   .attr("x", function(d) { return xScale(d.stringName); })
+   .attr("y", function(d) { return yScale(d.units); })
    .attr("width", xScale.bandwidth())
-   .attr("height", function(d) { return height - yScale(d.value); })
+   .attr("height", function(d) { return height - yScale(d.units); })
    .attr("fill", function(d, i) {
       return color(i);
   })
@@ -83,14 +84,28 @@ g.append("g")
 }
   static get properties() {
     return {
-        data: Array,        
+        data: Array,  
+        displayType:{
+          type: String,
+          value:"list"
+        },
+        stockdata:Array,     
     }
 }
 
   _handleResponse(event) {
-    this.data = event.detail.response;       
-    console.log("datas=",this.data);
-    this.initGraph();
+
+    if(this.displayType ==="chartVal"){
+      this.data = event.detail.response;       
+      console.log("datas=",this.data);
+      this.initGraph(this.data);
+    }
+    else{
+      this.stockdata = event.detail.response;       
+      console.log("datas=",this.stockdata);
+    }
+
+   
   }
 
   getUrl(param) {
@@ -108,8 +123,9 @@ g.append("g")
     ajaxstcok.generateRequest();
   }
 
-  _dailyStocks(){
-    this._generateAjaxCall("http://52.66.210.137:8085/IngTrade/trades/dailyStockAnlytics",'GET',null); 
+  _dailyStocks(e){
+    this.displayType ="chartVal";
+    this._generateAjaxCall("http://52.66.210.137:8085/IngTrade/trades/dailyStockAnalytics",'GET',null); 
   }
   static get template() {
     return html`
@@ -148,11 +164,11 @@ g.append("g")
 
     <div> Stocks </div>
 
-    <template is ="dom-repeat" items={{data}}>
+    <template is ="dom-repeat" items={{stockdata}}>
     <vaadin-accordion >
       <vaadin-accordion-panel theme="filled">
       <div slot="summary">[[item.stockName]]</div>
-       <template is="dom-repeat" items={{data}}>
+       <template is="dom-repeat" items={{stockdata}}>
        <div>[[item.description]]</div>
        
         
